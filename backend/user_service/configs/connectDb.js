@@ -8,9 +8,9 @@ const mongoURI =
 export default async function connectDb() {
   try {
     await mongoose.connect(mongoURI);
-    console.log("Auth Service: MongoDB connected");
+    console.log("User Service: MongoDB connected");
   } catch (err) {
-    console.error("Auth Service: MongoDB connection failed:", err.message);
+    console.error("User Service: MongoDB connection failed:", err.message);
     process.exit(1);
   }
 }

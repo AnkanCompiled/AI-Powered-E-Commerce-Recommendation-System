@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import AppError from "../errors/appError.js";
-import { registerDb, findUserByEmail } from "../db/userDb.js";
+import { registerDb, findUserByEmail } from "../repos/userRepo.js";
 import { createToken } from "../middlewares/tokenMiddleware.js";
 
 export async function registerService(name, email, password) {

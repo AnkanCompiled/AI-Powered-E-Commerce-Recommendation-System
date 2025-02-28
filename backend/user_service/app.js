@@ -2,8 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import jwt from "jsonwebtoken";
-import connectDb from "./config/connectDb.js";
+import connectDb from "./configs/connectDb.js";
 import errorHandler from "./errors/errorHandler.js";
 import indexRoute from "./routes/indexRoute.js";
 dotenv.config();
@@ -37,6 +36,6 @@ app.use(errorHandler);
 
 connectDb().then(() => {
   app.listen(Port, () => {
-    console.log(`Auth server running at http://localhost:${Port}`);
+    console.log(`User server running at http://localhost:${Port}`);
   });
 });
