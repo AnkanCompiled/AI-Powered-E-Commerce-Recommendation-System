@@ -24,7 +24,7 @@ const corsOptions = {
   credentials: true,
 };
 
-app.all("/auth/*", (req, res) => {
+app.all("api/users/*", (req, res) => {
   console.log(`Proxying users request: ${req.method} ${req.originalUrl}`);
   proxy.web(req, res, {
     target: AuthServiceUrl,

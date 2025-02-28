@@ -30,7 +30,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/auth", indexRoute);
+app.use("/users", indexRoute);
 
 app.use(errorHandler);
 
