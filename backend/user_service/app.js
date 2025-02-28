@@ -10,7 +10,7 @@ dotenv.config();
 
 const app = express();
 const Port = process.env.PORT || 3001;
-const ProxyUrl = process.env.PROXY_URL;
+const ProxyUrl = process.env.PROXY_URL || "http://localhost:3000";
 
 const whitelist = [ProxyUrl];
 
@@ -19,6 +19,7 @@ const corsOptions = {
     if (!origin || whitelist.includes(origin)) {
       callback(null, true);
     } else {
+      console.warn(`Blocked by CORS: ${origin}`);
       callback(new Error("Not allowed by CORS"));
     }
   },
@@ -30,7 +31,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/users", indexRoute);
+app.use("/api/users", indexRoute);
 
 app.use(errorHandler);
 

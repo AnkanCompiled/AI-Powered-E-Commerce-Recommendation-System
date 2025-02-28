@@ -7,10 +7,10 @@ dotenv.config();
 const app = express();
 const Port = process.env.PORT || 3000;
 const FrontEndUrl = process.env.FRONT_END_URL;
-const AuthServiceUrl = process.env.AUTH_SERVICE_URL;
+const UserServiceUrl = process.env.USER_SERVICE_URL;
 const proxy = httpProxy.createProxyServer();
 
-const whitelist = [FrontEndUrl, AuthServiceUrl];
+const whitelist = [FrontEndUrl, UserServiceUrl];
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -24,10 +24,13 @@ const corsOptions = {
   credentials: true,
 };
 
-app.all("api/users/*", (req, res) => {
+app.use(cors(corsOptions));
+
+// Proxy requests to user service
+app.all("/api/users/*", (req, res) => {
   console.log(`Proxying users request: ${req.method} ${req.originalUrl}`);
   proxy.web(req, res, {
-    target: AuthServiceUrl,
+    target: UserServiceUrl,
     changeOrigin: true,
   });
 });
@@ -37,7 +40,6 @@ proxy.on("error", (err, req, res) => {
   res.status(500).json({ error: "Proxy error", details: err.message });
 });
 
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
