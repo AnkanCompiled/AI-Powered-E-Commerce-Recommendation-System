@@ -5,7 +5,7 @@ import {
 } from "../controllers/authController.js";
 const route = express.Router();
 
-route.use("/register", registerController);
-route.use("/login", loginController);
+route.post("/register", registerController);
+route.post("/login", loginController);
 
 export default route;
