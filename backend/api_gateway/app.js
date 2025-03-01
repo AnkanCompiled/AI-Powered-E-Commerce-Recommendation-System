@@ -6,11 +6,13 @@ dotenv.config();
 
 const app = express();
 const Port = process.env.PORT || 3000;
-const FrontEndUrl = process.env.FRONT_END_URL;
-const UserServiceUrl = process.env.USER_SERVICE_URL;
+const FrontEndUrl = process.env.FRONT_END_URL || "http://localhost:5173";
+const UserServiceUrl = process.env.USER_SERVICE_URL || "http://localhost:3001";
+const ProductServiceUrl =
+  process.env.PRODUCT_SERVICE_URL || "http://localhost:3002";
 const proxy = httpProxy.createProxyServer();
 
-const whitelist = [FrontEndUrl, UserServiceUrl];
+const whitelist = [FrontEndUrl, UserServiceUrl, ProductServiceUrl];
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -31,6 +33,15 @@ app.all("/api/users/*", (req, res) => {
   console.log(`Proxying users request: ${req.method} ${req.originalUrl}`);
   proxy.web(req, res, {
     target: UserServiceUrl,
+    changeOrigin: true,
+  });
+});
+
+// Proxy requests to product service
+app.all("/api/products/*", (req, res) => {
+  console.log(`Proxying users request: ${req.method} ${req.originalUrl}`);
+  proxy.web(req, res, {
+    target: ProductServiceUrl,
     changeOrigin: true,
   });
 });

@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
 import AppError from "../errors/appError.js";
-import { registerDb, findUserByEmail } from "../repos/userRepo.js";
+import { registerRepo, findUserByEmailRepo } from "../repos/userRepo.js";
 import { createToken } from "../middlewares/tokenMiddleware.js";
 
 export async function registerService(name, email, password) {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await registerDb(name, email, hashedPassword);
+    const newUser = await registerRepo(name, email, hashedPassword);
     const token = createToken({ id: newUser._id });
     return token;
   } catch (error) {
@@ -21,7 +21,7 @@ export async function registerService(name, email, password) {
 
 export async function loginService(email, password) {
   try {
-    const user = await findUserByEmail(email);
+    const user = await findUserByEmailRepo(email);
     if (!user) throw new AppError("User not found", 404);
 
     const isMatch = await bcrypt.compare(password, user.password);
