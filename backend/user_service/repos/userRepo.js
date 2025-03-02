@@ -1,8 +1,8 @@
 import User from "../models/userModel.js";
 
-export async function registerRepo(name, email, hashedPassword) {
+export async function registerRepo(name, email, password) {
   try {
-    const newUser = new User({ name, email, password: hashedPassword });
+    const newUser = new User({ name, email, password });
     await newUser.save();
     return newUser;
   } catch (error) {

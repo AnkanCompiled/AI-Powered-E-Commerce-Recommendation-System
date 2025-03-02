@@ -9,8 +9,7 @@ import { createToken } from "../middlewares/tokenMiddleware.js";
 
 export async function registerService(name, email, password) {
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await registerRepo(name, email, hashedPassword);
+    const newUser = await registerRepo(name, email, password);
     const token = createToken({ id: newUser._id });
     return token;
   } catch (error) {
