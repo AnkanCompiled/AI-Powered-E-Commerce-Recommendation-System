@@ -41,7 +41,8 @@ export async function addProductService(
   description,
   price,
   category,
-  imageUrl
+  imageUrl,
+  stock
 ) {
   try {
     const newProduct = await addProductRepo(
@@ -49,7 +50,8 @@ export async function addProductService(
       description,
       price,
       category,
-      imageUrl
+      imageUrl,
+      stock
     );
     return newProduct;
   } catch (error) {

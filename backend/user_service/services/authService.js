@@ -1,6 +1,10 @@
 import bcrypt from "bcryptjs";
 import AppError from "../errors/appError.js";
-import { registerRepo, findUserByEmailRepo } from "../repos/userRepo.js";
+import {
+  registerRepo,
+  findUserByEmailRepo,
+  findUserRole,
+} from "../repos/userRepo.js";
 import { createToken } from "../middlewares/tokenMiddleware.js";
 
 export async function registerService(name, email, password) {
@@ -29,6 +33,19 @@ export async function loginService(email, password) {
 
     const token = createToken({ id: user._id });
     return token;
+  } catch (error) {
+    throw new AppError(
+      error.message || "Internal Server Error",
+      error.statusCode || 500
+    );
+  }
+}
+
+export async function roleService(id) {
+  try {
+    const role = await findUserRole(id);
+    if (!role) throw new AppError("User not found", 404);
+    return role;
   } catch (error) {
     throw new AppError(
       error.message || "Internal Server Error",

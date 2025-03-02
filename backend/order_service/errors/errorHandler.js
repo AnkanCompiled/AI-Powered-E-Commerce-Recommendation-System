@@ -1,5 +1,5 @@
 export default function errorHandler(err, req, res, next) {
-  console.error(`User service error: ${err}`);
+  console.error(`Order service error: ${err}`);
 
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";

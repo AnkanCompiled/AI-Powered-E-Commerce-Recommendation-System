@@ -15,6 +15,10 @@ const commands = [
     command: "npm start",
   },
   {
+    path: path.join(__dirname, "backend", "order_service"),
+    command: "npm start",
+  },
+  {
     path: path.join(__dirname, "backend", "user_service"),
     command: "npm start",
   },

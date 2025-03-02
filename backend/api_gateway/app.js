@@ -10,6 +10,8 @@ const FrontEndUrl = process.env.FRONT_END_URL || "http://localhost:5173";
 const UserServiceUrl = process.env.USER_SERVICE_URL || "http://localhost:3001";
 const ProductServiceUrl =
   process.env.PRODUCT_SERVICE_URL || "http://localhost:3002";
+const OrderServiceUrl =
+  process.env.ORDER_SERVICE_URL || "http://localhost:3003";
 const proxy = httpProxy.createProxyServer();
 
 const whitelist = [FrontEndUrl, UserServiceUrl, ProductServiceUrl];
@@ -42,6 +44,14 @@ app.all("/api/products/*", (req, res) => {
   console.log(`Proxying users request: ${req.method} ${req.originalUrl}`);
   proxy.web(req, res, {
     target: ProductServiceUrl,
+    changeOrigin: true,
+  });
+});
+
+app.all("/api/orders/*", (req, res) => {
+  console.log(`Proxying users request: ${req.method} ${req.originalUrl}`);
+  proxy.web(req, res, {
+    target: OrderServiceUrl,
     changeOrigin: true,
   });
 });

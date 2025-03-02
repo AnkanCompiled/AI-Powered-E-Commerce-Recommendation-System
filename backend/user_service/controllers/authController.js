@@ -1,4 +1,8 @@
-import { registerService, loginService } from "../services/authService.js";
+import {
+  registerService,
+  loginService,
+  roleService,
+} from "../services/authService.js";
 
 export async function registerController(req, res, next) {
   try {
@@ -27,6 +31,16 @@ export async function loginController(req, res, next) {
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       })
       .json({ message: "Login successful" });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function roleController(req, res, next) {
+  try {
+    const { id } = req.params;
+    const role = await roleService(id);
+    res.status(200).json({ role: role });
   } catch (error) {
     next(error);
   }

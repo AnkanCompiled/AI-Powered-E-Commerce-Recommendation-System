@@ -19,15 +19,17 @@ export async function getProductByCategoryRepo(category) {
     throw error;
   }
 }
-
 export async function getProductByQueryRepo(query) {
   try {
     const products = await Product.find({
-      name: { $regex: query, $options: "i" },
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } },
+      ],
     });
     return products;
   } catch (error) {
-    console.error("Error is getProductByQueryRepo:", error);
+    console.error("Error in getProductByQueryRepo:", error);
     throw error;
   }
 }
@@ -37,7 +39,8 @@ export async function addProductRepo(
   description,
   price,
   category,
-  imageUrl
+  imageUrl,
+  stock
 ) {
   try {
     const newProduct = new Product({
@@ -46,6 +49,7 @@ export async function addProductRepo(
       price,
       category,
       imageUrl,
+      stock,
     });
     await newProduct.save();
     return newProduct;

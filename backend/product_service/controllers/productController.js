@@ -4,10 +4,12 @@ import {
   getProductByQueryService,
   addProductService,
 } from "../services/productService.js";
+import { roleCheckService } from "../services/roleService.js";
 
 export async function getAllProductsController(req, res, next) {
   try {
-    const products = await getAllProductsService();
+    await roleCheckService(req.user.id, ["admin"]);
+    const products = await getAllProductsService(req.user.id);
     res.status(200).json(products);
   } catch (error) {
     next(error);
@@ -36,13 +38,14 @@ export async function getProductByQueryController(req, res, next) {
 
 export async function addProductController(req, res, next) {
   try {
-    const { name, description, price, category, imageUrl } = req.body;
+    const { name, description, price, category, imageUrl, stock } = req.body;
     const newProduct = await addProductService(
       name,
       description,
       price,
       category,
-      imageUrl
+      imageUrl,
+      stock
     );
     res
       .status(201)

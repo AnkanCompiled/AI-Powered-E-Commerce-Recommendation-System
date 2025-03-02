@@ -20,3 +20,13 @@ export async function findUserByEmailRepo(email) {
     throw error;
   }
 }
+
+export async function findUserRole(id) {
+  try {
+    const user = await User.findById(id);
+    return user.role;
+  } catch (error) {
+    console.error("Error is findUserByEmail:", error);
+    throw error;
+  }
+}
